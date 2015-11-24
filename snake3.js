@@ -184,17 +184,17 @@ $(document).ready(function (){
 		for(var i=0; i < snake2_array.length; i++) {
 			var c2 = snake2_array[i];
 			// lets paint 10px wide cells
-			paint_2cell(c2.x, c2.y);
+			paint_cell2(c2.x, c2.y);
 		}
 
 		// lets paint the food
 		paint_cell(food.x, food.y);
 		// snake 2
-		paint_2cell(food2.x, food2.y);
+		paint_cell2(food2.x, food2.y);
 		//lets paint the score
-		var score_text = "A's Score: " + score;
+		var score_text = "Blue's Score: " + score2;
 		// snake 2
-		var score2_text = "B's Score: " + score2;
+		var score2_text = "Gold's Score: " + score;
 
 		ctx.font = '14pt Calibri';
 		ctx.fillStyle = 'red';
@@ -209,7 +209,7 @@ $(document).ready(function (){
 		ctx.strokeRect (x*cw, y*cw, cw, cw);
 	}
 	// lets first create a generic function to paint  snake2 cells
-	function paint_2cell(x,y) {
+	function paint_cell2(x,y) {
 		ctx.fillStyle = "blue";
 		ctx.fillRect (x*cw, y*cw, cw, cw);
 		ctx.strokeStyle = "write";
@@ -235,14 +235,7 @@ $(document).ready(function (){
 		else if (key == "38" && d != "down") d = "up";
 		else if (key == "39" && d != "left") d = "right";
 		else if (key == "40" && d != "up") d = "down";
-		// the snake is now keyboard controllable
 
-	})
-	// lets add the keyboard controls for snake 2
-	$(document).keydown(function (e) {
-		var key = e.which;
-		// we will add another clause to prevent reverse gear
-		// using keyboard characters "w", "a", "d", and "s"
 		if (key == "65" && nd != "right") nd = "left";
 		else if (key == "87" && nd != "down") nd = "up";
 		else if (key == "68" && nd != "left") nd = "right";
@@ -250,7 +243,7 @@ $(document).ready(function (){
 		// the snake is now keyboard controllable
 
 	})
-
+	// lets add the keyboard controls for snake 2
 })
 
 
