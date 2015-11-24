@@ -13,6 +13,7 @@ $(document).ready(function (){
 	var food2;
 	var score;
 	var score2;
+	var score3;
 
 	// create sound effect
 	var audio = new Audio('Coin_Drop.mp3');
