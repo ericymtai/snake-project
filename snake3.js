@@ -1,5 +1,8 @@
 $(document).ready(function (){
 
+	var button = document.getElementById("btn");
+	var board = document.getElementById("board");
+
 	// canvas build
 	var canvas = $("#canvas")[0];
 	var ctx = canvas.getContext("2d");
@@ -25,6 +28,7 @@ $(document).ready(function (){
 	var snake2_array;
 
 	function init() {
+		board.style.display = "none";
 		d = "left"; // default direction
 		create_snake();			
 		create_food(); 	// now we can see the food particle	
@@ -42,8 +46,8 @@ $(document).ready(function (){
 		if (typeof game_loop != "undefined") clearInterval(game_loop);
 		game_loop = setInterval(paint, 100);
 	}
-
-	init();
+	button.addEventListener('click', init);
+	// init();
 
 	// create snake 
 	function create_snake() {
@@ -66,6 +70,7 @@ $(document).ready(function (){
 			// console.log(snake2_array[i]);
 		}
 	}
+	// create DIY code
 	function  randomFood (){
 			return  {
 			x: Math.round(Math.random()*(w-cw)/cw),
@@ -126,7 +131,8 @@ $(document).ready(function (){
 			init();
 			// lets organize the code a bit 
 			// sound effect when the snake hits walls 
-			// audio3.play();
+			audio3.play();
+			audio3.volume = .2;
 			return;
 		} 
 		 if (n2x == -1 || n2x == w/cw || n2y == -1 || n2y == h/cw || check_collision(n2x, n2y, snake2_array) )  {
@@ -134,7 +140,8 @@ $(document).ready(function (){
 			init();
 			// lets organize the code a bit 
 			// sound effect when the snake hits walls 
-			// audio3.play();
+			audio3.play();
+			audio3.volume = .2;
 			return;
 		}
 
@@ -146,28 +153,27 @@ $(document).ready(function (){
 			var tail = {x: nx, y: ny};
 			score++;
 			// sound effect when snake eat food
-			// audio.play();
+			audio.play();
 			// create new food
 			create_food();
 		}  else {
 			var tail = snake_array.pop(); // pops out the last xell
 			tail.x = nx; tail.y = ny;
 			// background music when the snake moves
-			// audio2.play();
+			audio2.play();
+			audio2.volume = 0.3;
 		} 
 
 		if (n2x == food2.x && n2y == food2.y) {
 			var tail2 = {x: n2x, y: n2y};
 			score2++;
 			// sound effect when snake eat food
-			// audio.play();
+			audio.play();
 			// create new food
 			create_food2();
 		} else {
 			var tail2 = snake2_array.pop(); // pops out the last xell
 			tail2.x = n2x; tail2.y = n2y;
-			// background music when the snake moves
-			// audio2.play();
 		}
 		// the snake can now eat food
 		snake_array.unshift(tail); // puts back the tail as the first cell
