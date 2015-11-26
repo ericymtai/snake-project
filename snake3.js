@@ -30,7 +30,7 @@ $(document).ready(function (){
 	var snake_array;  // an array of cells to make up the snake
 	var snake2_array;
 
-	function init() {
+	function player1() {
 		board.style.display = "none";
 		button3.style.display = "block";
 		d = "left"; // default direction
@@ -38,26 +38,25 @@ $(document).ready(function (){
 		create_food(); 	// now we can see the food particle	
 		// lets display the score
 		score = 0;
+	}
+	function player2() {
+		// create second snake
+		nd = "right";
+		create_snake2();
+		create_food2();
+		score2 = 0;
+	}
 
+	function init() {
+		player1();
 		// lets movethe snake now using a timer which will trigger the pair
 		//every 60ms
 		if (typeof game_loop != "undefined") clearInterval(game_loop);
 		game_loop = setInterval(paint, 100);
 	}
 	function init2() {
-		board.style.display = "none";
-		button3.style.display = "block";
-		d = "left"; // default direction
-		create_snake();			
-		create_food(); 	// now we can see the food particle	
-		// lets display the score
-		score = 0;
-
-		// create second snake
-		nd = "right";
-		create_snake2();
-		create_food2();
-		score2 = 0;
+		player1();
+		player2();
 
 		// lets movethe snake now using a timer which will trigger the pair
 		//every 60ms
