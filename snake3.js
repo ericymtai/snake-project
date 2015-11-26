@@ -2,6 +2,7 @@ $(document).ready(function (){
 
 	var button = document.getElementById("btn");
 	var button2 = document.getElementById("btn2");
+	var button3 = document.getElementById("btn3");
 	var board = document.getElementById("board");
 
 	// canvas build
@@ -30,6 +31,7 @@ $(document).ready(function (){
 
 	function init() {
 		board.style.display = "none";
+		button3.style.display = "block";
 		d = "left"; // default direction
 		create_snake();			
 		create_food(); 	// now we can see the food particle	
@@ -43,6 +45,7 @@ $(document).ready(function (){
 	}
 	function init2() {
 		board.style.display = "none";
+		button3.style.display = "block";
 		d = "left"; // default direction
 		create_snake();			
 		create_food(); 	// now we can see the food particle	
@@ -60,8 +63,13 @@ $(document).ready(function (){
 		if (typeof game_loop != "undefined") clearInterval(game_loop);
 		game_loop = setInterval(paint2, 100);
 	}
+	function reloadPage() {
+		location.reload();
+	}
+
 	button.addEventListener('click', init);
 	button2.addEventListener('click', init2);
+	button3.addEventListener('click', reloadPage);
 	// init();
 
 	// create snake 
