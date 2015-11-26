@@ -35,6 +35,8 @@ $(document).ready(function (){
 	var snake_array;  	// an array of cells to make up the snake1
 	var snake2_array;	// an array of cells to make up the snake2
 
+	var ifPlayer2 = true;	// set if selecting 2 players
+
 	// create the stage for snake1
 	function player1() {
 		board.style.display = "none";		// hide players' buttons
@@ -95,37 +97,44 @@ $(document).ready(function (){
 		}
 	}
 	// create random food position
-	function  randomFood (){
+	function  randomFood() {
 			return  {
 			x: Math.round(Math.random()*(w-cw)/cw),
 			y: Math.round(Math.random()*(h-cw)/cw)
 		};
 	}
-	// let's create the food now
+	// let's create the food or snake1 now
 	function create_food() {
 		food = randomFood();
-		// this will create a cell with x/y between 0-44
-		// because there are 45(450/10) positions across the rows and columns
+		// this will create a cell with x/y between 0-44, because there are 45(450/10) positions across the rows and columns
 	}
-	// let's create the food for snake 2
+	// let's create the food for snake2
 	function create_food2() {
 		food2 = randomFood();
 		// this will create a cell with x/y between 0-44, because there are 45(450/10) positions across the rows and columns
 	}
-	// lets paint the snake now
-	function paint() {
-		// to avoid the snake trail we need to paint the BG on every frame
+
+	// paint the stage backgroung color
+	function stageColor() {
 		// let's  paint the canvas now
-		ctx.fillStyle = "#ffa";
 		ctx.fillRect (0,0,w,h);
 		ctx.strokeStyle = "black";
 		ctx.strokeRect (0,0,w,h);
+	}
+	function goldScore() {
+		//let's paint the score
+		var score2_text = "Gold's Score: " + score;
+		ctx.font = '14pt Calibri';
+		ctx.fillStyle = 'brown';
+		ctx.fillText(score2_text, 250, h-100);
+	}
+	
 
+	function snake1Move() {
 		// the movement code for the snake to come here
 		// the logic is simple: pop out the ail cell and place it infront of the head cell
 		var nx = snake_array[0].x;
 		var ny = snake_array[0].y;
-
 		// there were the position of the head cell
 		// we will increment it to get the new head position
 		// let's add proper direction based movement now
@@ -133,21 +142,22 @@ $(document).ready(function (){
 		else if (d == "left") nx--;
 		else if (d == "up") ny--;
 		else if(d == "down") ny++;
-
-
 		// let's add the game over clause now
 		// this will restart the game if the snake hits thw wall
 		// let's add the code for body collision
 		// now is the head of the snake bumps into the body, the game will restart
 		if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, snake_array) )  {
 			// restart game
-			init();
+			if (ifPlayer2 == true) {
+				init2();
+			} else {
+				init();
+			}
 			// let's organize the code a bit 
 			audio3.play();		// sound effect when the snake hits walls 
 			audio3.volume = .2;	// turn down the sound volume
 			return;
 		} 
-
 		// let's write the code to make the snake eat the food
 		// the logic is simple
 		// if the new head position matches with that of tthe food
@@ -163,52 +173,33 @@ $(document).ready(function (){
 			audio.play();		// background music when the snake moves
 			audio.volume = 0.3;	// turn down the sound volume
 		} 
-
 		// the snake can now eat food
 		snake_array.unshift(tail); // puts back the tail as the first cell
-
 
 		for(var i=0; i < snake_array.length; i++) {
 			var c = snake_array[i];
 			// lets paint 10px wide cells
 			paint_cell(c.x, c.y);
 		}
-
-		// lets paint the food
-		paint_cell(food.x, food.y);
-
-		//lets paint the score
-		// var score_text = "Blue's Score: " + score2;
-		// snake 2
-		var score2_text = "Gold's Score: " + score;
-
-		ctx.font = '14pt Calibri';
-		ctx.fillStyle = 'red';
-		ctx.fillText(score2_text, 250, h-100);
-		// ctx.fillText(score_text, 50, h-100);
+		// let's paint the food
+		paint_cell(food.x, food.y);	
+	}
+	// lets paint the snake now
+	function paint() {
+		ctx.fillStyle = "#afa";
+		stageColor();
+		// to avoid the snake trail we need to paint the BG on every frame
+		snake1Move();
+		goldScore();
 	}
 	function paint2() {
 		// to avoid the snake trail we need to paint the BG on every frame
 		// lets  paint the canvas now
-		ctx.fillStyle = "#eef";
-		ctx.fillRect (0,0,w,h);
-		ctx.strokeStyle = "black";
-		ctx.strokeRect (0,0,w,h);
-
-		// the movement code for the snake to come here
-		// the logic is simple
-		// pop out the ail cell and place it infront of the head cell
-		var nx = snake_array[0].x;
-		var ny = snake_array[0].y;
-
-		// there were the position of the head cell
-		// we will increment it to get the new head position
-		// lets add proper direction based movement now
-		if (d == "right") nx++;
-		else if (d == "left") nx--;
-		else if (d == "up") ny--;
-		else if(d == "down") ny++;
-
+		ctx.fillStyle = "#fef";
+		stageColor();
+		// ifPlayer2 = true;
+		snake1Move();
+		goldScore();
 
 		// the movement code for the snake2
 		var n2x = snake2_array[0].x;
@@ -223,15 +214,8 @@ $(document).ready(function (){
 		// this will restart the game if the snake hits thw wall
 		// lets add the code for body collision
 		// now is the head of the snake bumps into the body, the game will restart
-		if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, snake_array) )  {
-			// restart game
-			init2();
-			// lets organize the code a bit 
-			audio3.play();		// sound effect when the snake hits walls 
-			audio3.volume = .2;	// turn down the sound volume
-			return;
-		} 
-		 if (n2x == -1 || n2x == w/cw || n2y == -1 || n2y == h/cw || check_collision(n2x, n2y, snake2_array) )  {
+		
+		if (n2x == -1 || n2x == w/cw || n2y == -1 || n2y == h/cw || check_collision(n2x, n2y, snake2_array) )  {
 			// restart game
 			init2();
 			// lets organize the code a bit 
@@ -239,23 +223,10 @@ $(document).ready(function (){
 			audio3.volume = .2;	// turn down the sound volume
 			return;
 		}
-
 		// lets write the code to make the snake eat the food
 		// the logic is simple
 		// if the new head position matches with that of tthe food
 		// create a new head instead of moving the tail
-		if(nx == food.x && ny == food.y) {
-			var tail = {x: nx, y: ny};
-			score++;
-			audio2.play();	// sound effect when snake eat food
-			create_food();	// create new food
-		}  else {
-			var tail = snake_array.pop(); // pops out the last xell
-			tail.x = nx; tail.y = ny;
-			audio.play();		// background music when the snake moves
-			audio.volume = 0.3;	// turn down the sound volume
-		} 
-
 		if (n2x == food2.x && n2y == food2.y) {
 			var tail2 = {x: n2x, y: n2y};
 			score2++;
@@ -265,82 +236,63 @@ $(document).ready(function (){
 			var tail2 = snake2_array.pop(); // pops out the last xell
 			tail2.x = n2x; tail2.y = n2y;
 		}
-		// the snake can now eat food
-		snake_array.unshift(tail); // puts back the tail as the first cell
-
 		// the snake2 can now eat food
 		snake2_array.unshift(tail2); // puts back the tail as the first cell
-
-		for(var i=0; i < snake_array.length; i++) {
-			var c = snake_array[i];
-			// lets paint 10px wide cells
-			paint_cell(c.x, c.y);
-		}
 		//	 the snake2 
 		for(var i=0; i < snake2_array.length; i++) {
 			var c2 = snake2_array[i];
 			// let's paint 10px wide cells
 			paint_cell2(c2.x, c2.y);
 		}
-
-		// let's paint the food
-		paint_cell(food.x, food.y);
 		// snake 2
 		paint_cell2(food2.x, food2.y);
 		//let's paint the score
 		var score_text = "Blue's Score: " + score2;
-		// snake 2
-		var score2_text = "Gold's Score: " + score;
-
-		ctx.font = '14pt Calibri';
-		ctx.fillStyle = 'red';
-		ctx.fillText(score2_text, 250, h-100);
+		// ctx.font = '14pt Calibri';
+		ctx.fillStyle = 'blue';
+		// ctx.fillText(score2_text, 250, h-100);
 		ctx.fillText(score_text, 50, h-100);
 	}
-	// let's first create a generic function to paint snake cells
-	function paint_cell(x,y) {
+	// let's first create a generic function to paint snake1 cells
+	function paint_cell(x, y) {
 		ctx.fillStyle = "gold";
 		ctx.fillRect (x*cw, y*cw, cw, cw);
 		ctx.strokeStyle = "blue";
 		ctx.strokeRect (x*cw, y*cw, cw, cw);
 	}
 	// let's first create a generic function to paint snake2 cells
-	function paint_cell2(x,y) {
+	function paint_cell2(x, y) {
 		ctx.fillStyle = "blue";
 		ctx.fillRect (x*cw, y*cw, cw, cw);
 		ctx.strokeStyle = "write";
 		ctx.strokeRect (x*cw, y*cw, cw, cw);
 	}
-	function check_collision(x,y,array) {
+	function check_collision(x, y, array) {
 		// this function will check if the provided x/y coordinates exist
 		// in an array of cells or not
-
 		for(var i=0; i < array.length; i++) {
 			if(array[i].x == x && array[i].y == y)
-				return true;
+			return true;
 		}
 		return false;
 	}
-
 
 	// let's add the keyboard controls
 	$(document).keydown(function (e) {
 		var key = e.which;
 		// we will add another clause to prevent reverse gear
-		// using keyboard characters "w", "a", "d", and "x"
+		// using keyboard characters "up", "down", "left", and "right" arroes
 		if (key == "37" && d != "right") d = "left";
 		else if (key == "38" && d != "down") d = "up";
 		else if (key == "39" && d != "left") d = "right";
 		else if (key == "40" && d != "up") d = "down";
-
+		// using keyboard characters "w", "a", "d", and "x"
 		if (key == "65" && nd != "right") nd = "left";
 		else if (key == "87" && nd != "down") nd = "up";
 		else if (key == "68" && nd != "left") nd = "right";
 		else if (key == "83" && nd != "up") nd = "down";
-		// the snake is now keyboard controllable
-
+		// the snakes are now keyboard controllable
 	})
-	// let's add the keyboard controls for snake 2
 })
 
 
