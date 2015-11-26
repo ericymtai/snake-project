@@ -1,6 +1,7 @@
 $(document).ready(function (){
 
 	var button = document.getElementById("btn");
+	var button2 = document.getElementById("btn2");
 	var board = document.getElementById("board");
 
 	// canvas build
@@ -35,6 +36,19 @@ $(document).ready(function (){
 		// lets display the score
 		score = 0;
 
+		// lets movethe snake now using a timer which will trigger the pair
+		//every 60ms
+		if (typeof game_loop != "undefined") clearInterval(game_loop);
+		game_loop = setInterval(paint, 100);
+	}
+	function init2() {
+		board.style.display = "none";
+		d = "left"; // default direction
+		create_snake();			
+		create_food(); 	// now we can see the food particle	
+		// lets display the score
+		score = 0;
+
 		// create second snake
 		nd = "right";
 		create_snake2();
@@ -44,9 +58,10 @@ $(document).ready(function (){
 		// lets movethe snake now using a timer which will trigger the pair
 		//every 60ms
 		if (typeof game_loop != "undefined") clearInterval(game_loop);
-		game_loop = setInterval(paint, 100);
+		game_loop = setInterval(paint2, 100);
 	}
 	button.addEventListener('click', init);
+	button2.addEventListener('click', init2);
 	// init();
 
 	// create snake 
@@ -91,6 +106,85 @@ $(document).ready(function (){
 	}
 	// lets paint the snake now
 	function paint() {
+		// to avoid the snake trail we need to paint the BG on every frame
+		// lets  paint the canvas now
+		ctx.fillStyle = "#ffa";
+		ctx.fillRect (0,0,w,h);
+		ctx.strokeStyle = "black";
+		ctx.strokeRect (0,0,w,h);
+
+		// the movement code for the snake to come here
+		// the logic is simple
+		// pop out the ail cell and place it infront of the head cell
+		var nx = snake_array[0].x;
+		var ny = snake_array[0].y;
+
+		// there were the position of the head cell
+		// we will increment it to get the new head position
+		// lets add proper direction based movement now
+		if (d == "right") nx++;
+		else if (d == "left") nx--;
+		else if (d == "up") ny--;
+		else if(d == "down") ny++;
+
+
+		// lets add the game over clause now
+		// this will restart the game if the snake hits thw wall
+		// lets add the code for body collision
+		// now is the head of the snake bumps into the body, the game will restart
+		if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, snake_array) )  {
+			// restart game
+			init();
+			// lets organize the code a bit 
+			// sound effect when the snake hits walls 
+			audio3.play();
+			audio3.volume = .2;
+			return;
+		} 
+
+		// lets write the code to make the snake eat the food
+		// the logic is simple
+		// if the new head position matches with that of tthe food
+		// create a new head instead of moving the tail
+		if(nx == food.x && ny == food.y) {
+			var tail = {x: nx, y: ny};
+			score++;
+			// sound effect when snake eat food
+			audio.play();
+			// create new food
+			create_food();
+		}  else {
+			var tail = snake_array.pop(); // pops out the last xell
+			tail.x = nx; tail.y = ny;
+			// background music when the snake moves
+			audio2.play();
+			audio2.volume = 0.3;
+		} 
+
+		// the snake can now eat food
+		snake_array.unshift(tail); // puts back the tail as the first cell
+
+
+		for(var i=0; i < snake_array.length; i++) {
+			var c = snake_array[i];
+			// lets paint 10px wide cells
+			paint_cell(c.x, c.y);
+		}
+
+		// lets paint the food
+		paint_cell(food.x, food.y);
+
+		//lets paint the score
+		// var score_text = "Blue's Score: " + score2;
+		// snake 2
+		var score2_text = "Gold's Score: " + score;
+
+		ctx.font = '14pt Calibri';
+		ctx.fillStyle = 'red';
+		ctx.fillText(score2_text, 250, h-100);
+		// ctx.fillText(score_text, 50, h-100);
+	}
+	function paint2() {
 		// to avoid the snake trail we need to paint the BG on every frame
 		// lets  paint the canvas now
 		ctx.fillStyle = "#ffa";
