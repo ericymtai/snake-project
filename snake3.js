@@ -14,6 +14,7 @@ $(document).ready(function (){
 	// lets save the cell width in a variable for easy control
 	var cw =  10;
 	var d;
+	var nd;
 	var food;
 	var food2;
 	var score;
@@ -77,9 +78,9 @@ $(document).ready(function (){
 		var length = 5;	
 		snake_array = [];
 		for(var i = 0 ; i <= length-1; i++) {
-			// console.log(i);
+			console.log(i);
 			snake_array.push({x:i+49, y:49});
-			// console.log(snake_array[i]);
+			console.log(snake_array[i]);
 		}
 	}
 
@@ -195,7 +196,7 @@ $(document).ready(function (){
 	function paint2() {
 		// to avoid the snake trail we need to paint the BG on every frame
 		// lets  paint the canvas now
-		ctx.fillStyle = "#ffa";
+		ctx.fillStyle = "#eef";
 		ctx.fillRect (0,0,w,h);
 		ctx.strokeStyle = "black";
 		ctx.strokeRect (0,0,w,h);
@@ -230,7 +231,7 @@ $(document).ready(function (){
 		// now is the head of the snake bumps into the body, the game will restart
 		if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, snake_array) )  {
 			// restart game
-			init();
+			init2();
 			// lets organize the code a bit 
 			// sound effect when the snake hits walls 
 			audio3.play();
@@ -239,7 +240,7 @@ $(document).ready(function (){
 		} 
 		 if (n2x == -1 || n2x == w/cw || n2y == -1 || n2y == h/cw || check_collision(n2x, n2y, snake2_array) )  {
 			// restart game
-			init();
+			init2();
 			// lets organize the code a bit 
 			// sound effect when the snake hits walls 
 			audio3.play();
@@ -309,14 +310,14 @@ $(document).ready(function (){
 		ctx.fillText(score2_text, 250, h-100);
 		ctx.fillText(score_text, 50, h-100);
 	}
-	// lets first create a generic function to paint cells
+	// lets first create a generic function to paint snake cells
 	function paint_cell(x,y) {
 		ctx.fillStyle = "gold";
 		ctx.fillRect (x*cw, y*cw, cw, cw);
 		ctx.strokeStyle = "blue";
 		ctx.strokeRect (x*cw, y*cw, cw, cw);
 	}
-	// lets first create a generic function to paint  snake2 cells
+	// lets first create a generic function to paint snake2 cells
 	function paint_cell2(x,y) {
 		ctx.fillStyle = "blue";
 		ctx.fillRect (x*cw, y*cw, cw, cw);
@@ -333,6 +334,7 @@ $(document).ready(function (){
 		}
 		return false;
 	}
+
 
 	// lets add the keyboard controls
 	$(document).keydown(function (e) {
