@@ -148,7 +148,8 @@ $(document).ready(function (){
 		// now is the head of the snake bumps into the body, the game will restart
 		if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, snake_array) )  {
 			// restart game
-			if (ifPlayer2 == true) {
+
+			if (ifPlayer2 == false) {
 				init2();
 			} else {
 				init();
@@ -197,7 +198,7 @@ $(document).ready(function (){
 		// lets  paint the canvas now
 		ctx.fillStyle = "#fef";
 		stageColor();
-		// ifPlayer2 = true;
+		ifPlayer2 = false;
 		snake1Move();
 		goldScore();
 
