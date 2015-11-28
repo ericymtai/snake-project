@@ -36,7 +36,7 @@ $(document).ready(function () {
 	var goldsnake_array;  	// an array of cells to make up the goldsnake
 	var bluesnake_array;	// an array of cells to make up the bluesnake
 
-	var ifPlayer2 = true;	// set if selecting 2 players
+	var ifPlayer2 = false;	// set if selecting 2 players
 
 	// create the stage for goldsnake
 	function goldsnake() {
@@ -116,7 +116,7 @@ $(document).ready(function () {
 	}
 
 	// paint the stage area and stroke color
-	function stageColor() {
+	function stageArea() {
 		// let's  paint the canvas now
 		ctx.fillRect (0,0,w,h);
 		ctx.strokeStyle = "black";
@@ -129,9 +129,13 @@ $(document).ready(function () {
 		ctx.fillStyle = 'brown';
 		ctx.fillText(score_text, 250, h-100);
 	}
-	
+	function crashSound() {
+			// let's organize the code a bit 
+			audio3.play();		// sound effect when the snake hits walls 
+			audio3.volume = .2;	// turn down the sound volume
+	}
 
-	function snakeMove() {
+	function goldSnakeMove() {
 		// the movement code for the goldsnake to come here
 		// the logic is simple: pop out the ail cell and place it infront of the head cell
 		var nx = goldsnake_array[0].x;
@@ -150,14 +154,14 @@ $(document).ready(function () {
 		if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, goldsnake_array) )  {
 			// restart game
 
-			if (ifPlayer2 == false) {
+			if (ifPlayer2 == true) {
 				init2();
+				crashSound();
 			} else {
 				init();
+				crashSound();
 			}
-			// let's organize the code a bit 
-			audio3.play();		// sound effect when the snake hits walls 
-			audio3.volume = .2;	// turn down the sound volume
+
 			return;
 		} 
 		// let's write the code to make the goldsnake eat the food
@@ -189,18 +193,18 @@ $(document).ready(function () {
 	// lets paint the snake now
 	function paint() {
 		ctx.fillStyle = "#afa";
-		stageColor();
+		stageArea();
 		// to avoid the snake trail we need to paint the BG on every frame
-		snakeMove();
+		goldSnakeMove();
 		goldScore();
 	}
 	function paint2() {
 		// to avoid the snake trail we need to paint the BG on every frame
 		// lets  paint the canvas now
 		ctx.fillStyle = "#fef";
-		stageColor();
-		ifPlayer2 = false;
-		snakeMove();
+		stageArea();
+		ifPlayer2 = true;
+		goldSnakeMove();
 		goldScore();
 
 		// the movement code for the bluesnake
@@ -220,9 +224,7 @@ $(document).ready(function () {
 		if (n2x == -1 || n2x == w/cw || n2y == -1 || n2y == h/cw || check_collision(n2x, n2y, bluesnake_array) )  {
 			// restart game
 			init2();
-			// lets organize the code a bit 
-			audio3.play();		// sound effect when the snake hits walls 
-			audio3.volume = .2;	// turn down the sound volume
+			crashSound();
 			return;
 		}
 		// lets write the code to make the snake eat the food
