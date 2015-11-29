@@ -41,7 +41,7 @@ $(document).ready(function () {
 
 	var ifPlayer2 = false;	// set if selecting 2 players
 
-	var changeBGColor = 0;
+	var changeBGColor = 0;	// set the background color change only when snake eat food 
 
 	// create the stage for goldsnake
 	function goldsnake() {
@@ -169,10 +169,10 @@ $(document).ready(function () {
 		// create a new head instead of moving the tail
 		if(nx == food.x && ny == food.y) {
 			var tail = {x: nx, y: ny};
-			score++;	
+			score++;			// add one when snake eat food
 			audio2.play();		// sound effect when snake eat food
 			create_food();		// create new food
-			changeBGColor++;
+			changeBGColor++;	// add one when snake eat food
 			
 
 		}  else {
@@ -194,21 +194,21 @@ $(document).ready(function () {
 	}
 	// lets paint the snake now
 	function paint() {
-		ctx.fillStyle = "#afa";
-		stageArea();
+		ctx.fillStyle = "#afa";		// set background color
+		stageArea();		// call background area
 		// to avoid the snake trail we need to paint the BG on every frame
 		goldSnakeMove();
-		goldScore();
+		goldScore();		// call goldsnake's score
 	}
+	// let's draw the snake image 
 	function snakeImg() {
-		//image
 		ctx.globalAlpha = 1;
-		ctx.drawImage (snakeImage, 0, 0 );
+		ctx.drawImage (snakeImage, 0, 0 );	// call the shake image
 	}
 	function paint2() {
 		// to avoid the snake trail we need to paint the BG on every frame
 		// lets  paint the canvas now
-		if (changeBGColor == 1) {
+		if (changeBGColor == 1) {		// change background color on different score
 				ctx.fillStyle = "#aaf";
 			} else if (changeBGColor == 2) {
 				ctx.fillStyle = "rgba(124,233,129,1";
@@ -216,18 +216,13 @@ $(document).ready(function () {
 				ctx.fillStyle = "#fff";
 			}
 		
-		
 		stageArea();
-		if (changeBGColor >= 3) {
-				console.log('hi snack');
-				snakeImg();
+
+		if (changeBGColor >= 3) {		// change to the snake image when reach score 3
+				snakeImg();				// call the image
 			}
-			//  else if (changeBGColor == 0){
-			// 	ctx.fillStyle = "#afa";	
-			// 	console.log('hi go snack');
-			// }
 		
-		ifPlayer2 = true;
+		ifPlayer2 = true;				// set the 2 players true to call start two players' game
 		goldSnakeMove();
 		goldScore();
 
