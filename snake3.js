@@ -26,17 +26,22 @@ $(document).ready(function () {
 	var score;		// goldsnake's score
 	var score2;		// bluesnake's score
 
+	// image
+	var snakeImage = new Image();
+	snakeImage.src = "snake_outline2.svg";
+
 	// create sound effect
 	var audio = new Audio('House-music.mp3');	// background music
 	var audio2 = new Audio('Coin_Drop.mp3');	// sound effect when eating food
 	var audio3 = new Audio('Falling_Off.mp3');	// sound effect when hitting walls
-
 
 	// let's build the snakes
 	var goldsnake_array;  	// an array of cells to make up the goldsnake
 	var bluesnake_array;	// an array of cells to make up the bluesnake
 
 	var ifPlayer2 = false;	// set if selecting 2 players
+
+	var changeBGColor = 0;
 
 	// create the stage for goldsnake
 	function goldsnake() {
@@ -88,7 +93,6 @@ $(document).ready(function () {
 			goldsnake_array.push({x:i+49, y:49});		// set the snake's moving start from bottom right corner
 		}
 	}
-
 	// create bluesnake
 	function create_bluesnake() {
 		var length = 5;	
@@ -99,7 +103,7 @@ $(document).ready(function () {
 	}
 	// create random food position
 	function  randomFood() {
-			return  {
+		return  {
 			x: Math.round(Math.random()*(w-cw)/cw),
 			y: Math.round(Math.random()*(h-cw)/cw)
 		};
@@ -114,7 +118,6 @@ $(document).ready(function () {
 		food2 = randomFood();
 		// this will create a cell with x/y between 0-44, because there are 45(450/10) positions across the rows and columns
 	}
-
 	// paint the stage area and stroke color
 	function stageArea() {
 		// let's  paint the canvas now
@@ -130,11 +133,10 @@ $(document).ready(function () {
 		ctx.fillText(score_text, 250, h-100);
 	}
 	function crashSound() {
-			// let's organize the code a bit 
-			audio3.play();		// sound effect when the snake hits walls 
-			audio3.volume = .2;	// turn down the sound volume
+		// let's organize the code a bit 
+		audio3.play();		// sound effect when the snake hits walls 
+		audio3.volume = .2;	// turn down the sound volume
 	}
-
 	function goldSnakeMove() {
 		// the movement code for the goldsnake to come here
 		// the logic is simple: pop out the ail cell and place it infront of the head cell
@@ -153,15 +155,12 @@ $(document).ready(function () {
 		// now is the head of the snake bumps into the body, the game will restart
 		if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, goldsnake_array) )  {
 			// restart game
-
 			if (ifPlayer2 == true) {
 				init2();
-				crashSound();
 			} else {
 				init();
-				crashSound();
-			}
-
+			}				
+			crashSound();
 			return;
 		} 
 		// let's write the code to make the goldsnake eat the food
@@ -173,6 +172,9 @@ $(document).ready(function () {
 			score++;	
 			audio2.play();		// sound effect when snake eat food
 			create_food();		// create new food
+			changeBGColor++;
+			
+
 		}  else {
 			var tail = goldsnake_array.pop(); // pops out the last xell
 			tail.x = nx; tail.y = ny;
@@ -198,11 +200,33 @@ $(document).ready(function () {
 		goldSnakeMove();
 		goldScore();
 	}
+	function snakeImg() {
+		//image
+		ctx.globalAlpha = 1;
+		ctx.drawImage (snakeImage, 0, 0 );
+	}
 	function paint2() {
 		// to avoid the snake trail we need to paint the BG on every frame
 		// lets  paint the canvas now
-		ctx.fillStyle = "#fef";
+		if (changeBGColor == 1) {
+				ctx.fillStyle = "#aaf";
+			} else if (changeBGColor == 2) {
+				ctx.fillStyle = "rgba(124,233,129,1";
+			} else {
+				ctx.fillStyle = "#fff";
+			}
+		
+		
 		stageArea();
+		if (changeBGColor >= 3) {
+				console.log('hi snack');
+				snakeImg();
+			}
+			//  else if (changeBGColor == 0){
+			// 	ctx.fillStyle = "#afa";	
+			// 	console.log('hi go snack');
+			// }
+		
 		ifPlayer2 = true;
 		goldSnakeMove();
 		goldScore();
@@ -236,6 +260,7 @@ $(document).ready(function () {
 			score2++;
 			audio2.play();	// sound effect when snake eat food
 			create_food2();	// create new food
+			red();
 		} else {
 			var tail2 = bluesnake_array.pop(); // pops out the last xell
 			tail2.x = n2x; tail2.y = n2y;
