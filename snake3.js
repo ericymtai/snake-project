@@ -1,3 +1,10 @@
+var snakeImage1 = new Image();
+	snakeImage1.src = "snake_outline1.png";
+var snakeImage2 = new Image();
+	snakeImage2.src = "snake_outline2.png";
+var snakeImage3 = new Image();
+	snakeImage3.src = "snake_outline3.png";
+
 
 $(document).ready(function () {
 
@@ -27,8 +34,10 @@ $(document).ready(function () {
 	var score2;		// bluesnake's score
 
 	// image
-	var snakeImage = new Image();
-	snakeImage.src = "snake_outline2.svg";
+	// var snakeImage1 = new Image();
+	// snakeImage1.src = "snake_outline1.png";
+	// 	var snakeImage2 = new Image2();
+	// snakeImage2.src = "snake_outline1.png";
 
 	// create sound effect
 	var audio = new Audio('House-music.mp3');	// background music
@@ -194,32 +203,46 @@ $(document).ready(function () {
 	}
 	// lets paint the snake now
 	function paint() {
-		ctx.fillStyle = "#afa";		// set background color
+		// set background color
+			if (score == 0) {		// change background color on different score
+				ctx.fillStyle = "#c6f";
+			} else if (score == 1) {
+				ctx.fillStyle = "#ff1";
+			} else if (score == 2) {
+				ctx.fillStyle = "#ddf";
+			} else {
+				ctx.fillStyle = "#af7";
+			}
 		stageArea();		// call background area
 		// to avoid the snake trail we need to paint the BG on every frame
 		goldSnakeMove();
 		goldScore();		// call goldsnake's score
 	}
 	// let's draw the snake image 
-	function snakeImg() {
-		ctx.globalAlpha = 1;
-		ctx.drawImage (snakeImage, 0, 0 );	// call the shake image
+	function snakeImg(a) {
+		// ctx.globalAlpha = 1;
+		console.log(window["snakeImage"+a]); // THE OBJECT snakeImage1 = {name: sbsad, posi:1,4}
+		ctx.drawImage(window["snakeImage"+a], 0, 0 );	// call the shake image
 	}
 	function paint2() {
 		// to avoid the snake trail we need to paint the BG on every frame
 		// lets  paint the canvas now
-		if (changeBGColor == 1) {		// change background color on different score
-				ctx.fillStyle = "#aaf";
-			} else if (changeBGColor == 2) {
-				ctx.fillStyle = "rgba(124,233,129,1";
+		if (changeBGColor == 0) {		// change background color on different score
+				ctx.fillStyle = "#dfa";
+			} else if (changeBGColor == 4) {
+				ctx.fillStyle = "#ffa";
 			} else {
-				ctx.fillStyle = "#fff";
+				ctx.fillStyle = "#1ff";
 			}
 		
 		stageArea();
 
-		if (changeBGColor >= 3) {		// change to the snake image when reach score 3
-				snakeImg();				// call the image
+		if (changeBGColor == 1) {		// change to the snake image when reach score 3
+				snakeImg(2);				// call the image
+			} else if (changeBGColor == 2) {		
+				snakeImg(3);				// call the image
+			} else if (changeBGColor > 3) {		
+				snakeImg(1);				// call the image
 			}
 		
 		ifPlayer2 = true;				// set the 2 players true to call start two players' game
