@@ -130,7 +130,7 @@ $(document).ready(function () {
 		if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, goldsnake_array) )  {
 			// restart game
 			init();				// start 2 players game when false				
-			crashSound();			// call sound effect
+			crashSound();			// call sound effect when hit walls
 			return;
 		} 
 		// let's write the code to make the goldsnake eat the food
@@ -142,7 +142,6 @@ $(document).ready(function () {
 			score++;			// add one when snake eat food
 			audio2.play();		// sound effect when snake eat food
 			create_food();		// create new food	
-
 		}  else {
 			var tail = goldsnake_array.pop(); // pops out the last xell
 			tail.x = nx; tail.y = ny;
