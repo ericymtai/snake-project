@@ -19,6 +19,9 @@ $(document).ready(function () {
 	// set variable for button restart
 	var button3 = document.getElementById("btn3");
 
+	// set variable for button restart
+	var button4 = document.getElementById("btn4");
+
 	// set variable for the div that includes button 1 player and 2 players
 	var board = document.getElementById("board");
 
@@ -38,8 +41,6 @@ $(document).ready(function () {
 	var audio = new Audio('House-music.mp3');	// background music
 	var audio2 = new Audio('Coin_Drop.mp3');	// sound effect when eating food
 	var audio3 = new Audio('Falling_Off.mp3');	// sound effect when hitting walls
-	var initialSpeed =120;
-	var speed = 120;
 	// let's build the snakes
 	var goldsnake_array;  	// an array of cells to make up the goldsnake
 
@@ -52,17 +53,13 @@ $(document).ready(function () {
 		create_food(); 	// now we can see the food particle	for goldsnake
 		score = 0;		// let's display the score for goldsnake
 	}
-	function addSpeed(b) {
-		if (typeof game_loop != "undefined") clearInterval(game_loop);
-		game_loop = setInterval(paint, b);
-	}
+
 	// start the game with 1 player
 	function init() {
 		goldsnake();		// call function goldsnake
 		// let's move the goldsnake now using a timer which will trigger the paint function every 90ms
-		speed = initialSpeed;
-
-		addSpeed(initialSpeed);
+		if (typeof game_loop != "undefined") clearInterval(game_loop);
+		game_loop = setInterval(paint, 120);
 	}
 
 	// back to the beginning stage when press restart button
@@ -73,6 +70,7 @@ $(document).ready(function () {
 	// call functions when button clicked
 	button.addEventListener('click', init);			// call function init when goldsnake button pressed
 	button3.addEventListener('click', reloadPage);	// call function reloadPage when restart button pressed  
+	button4.addEventListener('click', pause);
 
 	// let's create the goldsnake 
 	function create_goldsnake() {
@@ -81,6 +79,11 @@ $(document).ready(function () {
 		for(var i = 0 ; i <= length-1; i++) {
 			goldsnake_array.push({x:i+49, y:49});		// set the snake's moving start from bottom right corner
 		}
+	}
+
+	function pause() {
+		console.log('print pause');
+		setTimeout(  paint, 5000);
 	}
 	// let's create random food position
 	function  randomFood() {
@@ -148,21 +151,20 @@ $(document).ready(function () {
 			score++;			// add one when snake eat food
 			audio2.play();		// sound effect when snake eat food
 			create_food();		// create new food	
-			speed = speed*0.9;
-			addSpeed(speed);
-			// if (score==0) {
-			// 	addSpeed(120);
-			// } else if (score==1) {
-			// 	addSpeed(100);
-			// } else if (score==2) {
-			// 	addSpeed(80);
-			// } else if (score==3) {
-			// 	addSpeed(60);
-			// } else if (score==4) {
-			// 	addSpeed(40);
-			// } else if (score==5) {
-			// 	addSpeed(20);
-			// } 
+
+			if (score==0) {
+				addSpeed(120);
+			} else if (score==1) {
+				addSpeed(100);
+			} else if (score==2) {
+				addSpeed(80);
+			} else if (score==3) {
+				addSpeed(60);
+			} else if (score==4) {
+				addSpeed(40);
+			} else if (score==5) {
+				addSpeed(20);
+			} 
 		}  else {
 			var tail = goldsnake_array.pop(); // pops out the last xell
 			tail.x = nx; tail.y = ny;
@@ -184,12 +186,19 @@ $(document).ready(function () {
 	function snakeImg(a) {
 		console.log(window["snakeImage"+a]); // THE OBJECT snakeImage1 
 		ctx.drawImage(window["snakeImage"+a], 0, 0 );	// call the shake image
+
+		// window["snakeImage"+a].width = w/2;
+		// window["snakeImage"+a].height = h/2;
+
 	}
 	
 
 	// lets paint the snake with one player game now
-	function paint() {			
+	function paint() {	
 			
+			clearTimeout(pause);
+
+
 		stageArea();		// call background area
 		if (score == 0 ) {		// change to the snake image when reach score 3
 				snakeImg(1);				// call the image1	

@@ -15,21 +15,6 @@
 			text-align: center;
 			text-decoration: underline;
 		}
-		h2 {
-			text-align: center;
-		}
-		h3 {
-			color: blue;
-			background: lightblue;
-			padding: .5em 1em;
-		}
-		.h3 {
-			color: gold;
-			background: brown;
-		}
-		p {
-			font-size: 1.4em;
-		}
 		#board {
 			width: 30%;
 			height: 25em;
@@ -48,8 +33,10 @@
 			margin-right: 18%;
 			display: none;
 		}
-		canvas {
+		#canvas {
 			margin: 2em 3%;
+			/*width: 500px;
+			height: 500px;*/
 		}
 		</style>
 </head>
@@ -64,8 +51,10 @@
 	<button id="btn" class="btn">start</button>
 </div>
 
+<!-- <canvas id="canvas" width="1000" height="1000"></canvas> -->
 <canvas id="canvas" width="500" height="500"></canvas>
 <button id="btn3" class="btn">BACK</button>
+<button id="btn4" class="btn">Pause</button>
 
 
 	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script> 
