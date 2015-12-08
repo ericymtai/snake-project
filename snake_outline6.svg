@@ -103,6 +103,8 @@
 		#snake {
 		stroke:#ffaa00;
 		stroke-width:1.5px;
+		-moz-stroke-dasharray:800;
+		-moz-stroke-dashoffset:800;
 		stroke-dasharray:800;
 		stroke-dashoffset:800;
 		-webkit-animation:offset 6s ease infinite, changeColor 6s ease infinite;
