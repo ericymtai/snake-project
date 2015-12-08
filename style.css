@@ -1,0 +1,48 @@
+/*		svg {
+		width: 100%;
+		display: block;
+		margin: 0px auto;
+	}*/
+	#bg {
+			fill:red;
+	 	}
+	@-webkit-keyframes offset {
+		100% {
+		stroke-dashoffset:0;
+		}
+	}
+    @-moz-keyframes offset {
+		100% {
+		stroke-dashoffset:0;
+		}
+	}
+    @keyframes offset {
+		100% {
+		stroke-dashoffset:0;
+		}
+	}
+	@-webkit-keyframes revealColor {
+		100% {
+			fill: #aaaaf6;
+		}	
+	}
+    @-moz-keyframes revealColor {
+		100% {
+			fill: #aaaaf6;
+		}	
+	}
+    @keyframes revealColor {
+		100% {
+			fill: #aaaaf6;
+		}	
+        
+	}
+		#snake {
+		stroke:#ff0000;
+		stroke-width:3px;
+		stroke-dasharray:850;
+		stroke-dashoffset:850;
+		-webkit-animation:offset 6s ease infinite;
+        -moz-animation:offset 6s ease infinite;
+        animation:offset 6s ease infinite;
+	}
